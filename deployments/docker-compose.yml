@@ -1,0 +1,83 @@
+---
+version: '3'
+
+networks:
+  graylog:
+    driver: bridge
+
+volumes:
+  mongo: {}
+  elasticsearch: {}
+  graylog: {}
+
+services:
+  mongo:
+    image: mongo:3
+    networks:
+      - graylog
+    volumes:
+      - mongo:/data/db
+
+  elasticsearch:
+    image: elasticsearch:5
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=
+      - network.host=0.0.0.0
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - graylog
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+
+  graylog:
+    image: graylog2/graylog:2.4
+    networks:
+      - graylog
+    depends_on:
+      - mongo
+      - elasticsearch
+    links:
+      - mongo
+      - elasticsearch
+    environment:
+      GRAYLOG_PASSWORD_SECRET: somepasswordpepper
+      GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 # admin / admin
+      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+    ports:
+      - 9000:9000
+      - 514:514
+      - 514:514/udp
+      - 12201:12201
+      - 12201:12201/udp
+    volumes:
+      - graylog:/usr/share/graylog/data/journal
+
+    # /api/system/lbstatus
+    # healthcheck:
+    #   test: ['CMD-SHELL', 'echo "db.stats().ok" | mongo --quiet || exit1']
+    #   interval: 5s
+
+  logspout:
+    image: "micahhausler/logspout:gelf"
+    hostname: logspout
+    command: "gelf://graylog:12201"
+    environment:
+      LOGSPOUT: ignore
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - graylog
+    links:
+      - graylog
+    depends_on:
+      - graylog
+    ports:
+      - "8000:80"

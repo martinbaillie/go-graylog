@@ -1,0 +1,25 @@
+{
+    "Cyclo": 15,
+    "Deadline": "2m",
+    "LineLength": 110,
+    "Enable": [
+        "deadcode",
+        "errcheck",
+        "dupl",
+        "gas",
+        "goconst",
+        "gocyclo",
+        "goimports",
+        "golint",
+        "ineffassign",
+        "interfacer",
+        "lll",
+        "megacheck",
+        "structcheck",
+        "unconvert",
+        "unparam",
+        "varcheck",
+        "vet",
+        "vetshadow"
+    ]
+}
