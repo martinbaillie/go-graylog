@@ -1,6 +1,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/martinbaillie/go-graylog?style=flat-square)](https://goreportcard.com/report/github.com/martinbaillie/go-graylog)
 [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/martinbaillie/go-graylog)
 [![Release](https://img.shields.io/github/release/golang-standards/project-layout.svg?style=flat-square)](https://github.com/martinbaillie/go-graylog/releases/latest)
+[![License](https://img.shields.io/badge/license-BSD-brightgreen.svg?style=flat-square)](/LICENSE)
 
 # go-graylog
 
