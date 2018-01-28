@@ -11,6 +11,8 @@ SRCFILES	?=$(shell find . -type f -name '*.go' -not -path './vendor/*')
 SRCDIRS		?=$(shell find . -mindepth 1 -maxdepth 1 -type d | \
 			  grep -Ev 'vendor|pkg')
 
+METALINTER := $(shell command -v gometalinter 2> /dev/null)
+
 LDFLAGS ?=-s -w -extld ld -extldflags -static \
 		  -X 'main.BuildTime=$(TIME)' \
 		  -X 'main.Project=$(PROJECT)' \
@@ -25,7 +27,13 @@ PROJECT	?=graylog
 
 .DEFAULT_GOAL := build
 
-.PHONY: clean fix fmt metalint test build help
+.PHONY: dep clean fix fmt metalint test build help
+
+dep:: ## Installs testing dependencies
+	@echo ">> dep"
+ifndef METALINTER
+	@go get -u github.com/alecthomas/gometalinter && gometalinter --install
+endif
 
 clean:: ## Removes binary and generated files
 	@echo ">> cleaning"
@@ -44,7 +52,7 @@ metalint: ## Heavyweight linting
 	@declare -i res=0; inc(){ res+=1; }; trap inc ERR; for d in $(SRCDIRS); do \
 		gometalinter --config=.metalinter.json $$d/...; done; exit $$res
 
-test: clean fix fmt metalint
+test: clean dep fix fmt metalint
 
 build:: test ## Builds for all arch ($GOARCH) and OS ($GOOS)
 	@echo ">> building"
