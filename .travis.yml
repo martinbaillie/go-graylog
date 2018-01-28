@@ -1,7 +1,5 @@
 language: go
-branches:
-  only:
-  - master
+all_branches: true
 install: true
 deploy:
   provider: releases
@@ -14,6 +12,5 @@ deploy:
   on:
     repo: martinbaillie/go-graylog
     tags: true
-
 notifications:
   email: true
