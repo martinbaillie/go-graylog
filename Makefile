@@ -23,6 +23,8 @@ GOARCH 	?=amd64
 VERSION ?=$(BRANCH)-$(HASH)
 PROJECT	?=graylog
 
+.DEFAULT_GOAL := build
+
 .PHONY: clean fix fmt metalint test build help
 
 clean:: ## Removes binary and generated files
