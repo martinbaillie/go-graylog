@@ -1,5 +1,4 @@
 language: go
-all_branches: true
 install: true
 deploy:
   provider: releases
@@ -11,6 +10,7 @@ deploy:
   - cmd/graylog/graylog-windows-amd64
   on:
     repo: martinbaillie/go-graylog
+    all_branches: true
     tags: true
 notifications:
   email: true
