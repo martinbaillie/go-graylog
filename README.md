@@ -13,7 +13,7 @@ The CLI is self-serving at this stage i.e. I needed the current subset of comman
 ### API
 The library is currently coded to Graylog `v2.4.0-beta.3+a6b18a2`. YMMV if you're not on the 2.4 stream of Graylog (latest at the time of writing this).
 
-It starts here: `go get -u github.com/martinbaillie/go-graylog/pkg` [[Godoc]](https://godoc.org/github.com/martinbaillie/go-graylog/pkg).
+It starts here: `go get -u github.com/martinbaillie/go-graylog/...` [[Godoc]](https://godoc.org/github.com/martinbaillie/go-graylog/pkg).
 
 If you're developing with the library I would start by referencing your Graylog server's API browser at `<graylog server>/api/api-browser` but then searching through `pkg` or the Godoc for the name of the endpoint—it's often not in the package you would expect due to some [awkward codegen](./api/README.md).
 
@@ -53,25 +53,25 @@ Use "graylog search [command] --help" for more information about a command.
 
 ##### Search: Absolute
 ```
-Usage:
-  graylog search [command]
+Search for messages using an absolute timerange, specified as from/to
+with format yyyy-MM-ddTHH:mm:ss.SSSZ (e.g. 2014-01-23T15:34:49.000Z) or
+yyyy-MM-dd HH:mm:ss.
 
-Available Commands:
-  absolute    Search for messages using an absolute timerange
-  keyword     Search for messages using a natural language timerange
-  relative    Search for messages starting from a relative timestamp
+Usage:
+  graylog search absolute [flags]
 
 Flags:
-  -h, --help         help for search
-  -t, --timestamps   print message timestamps (local timezone)
-      --utc -t       print UTC message timestamps (has no effect without -t)
+      --from string   from this absolute timestamp e.g. "2018-01-01 00:00:00"
+  -h, --help          help for absolute
+      --to string     to this absolute timestamp e.g. "2018-02-01 00:00:00"
 
 Global Flags:
-  -p, --pass string       graylog pass (use "-" for masked prompt) (default "admin")
-  -s, --servers strings   graylog server(s) to query (default [localhost:9000])
-  -u, --user string       graylog user (default "admin")
-
-Use "graylog search [command] --help" for more information about a command.
+  -d, --debug                 print debug information
+  -p, --pass string           graylog pass (use "-" for masked prompt) (default "admin")
+  -s, --servers stringSlice   graylog server(s) to query (default [localhost:9000])
+  -t, --timestamps            print message timestamps (local timezone)
+  -u, --user string           graylog user (default "admin")
+      --utc -t                print UTC message timestamps (has no effect without -t)
 ```
 
 ##### Search: Keyword
