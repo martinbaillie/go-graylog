@@ -32,6 +32,7 @@ var (
 	from       string
 	to         string
 	keyword    string
+	filter     string
 	interval   time.Duration
 	since      time.Duration
 
@@ -72,6 +73,7 @@ yyyy-MM-dd HH:mm:ss.`,
 			params.Query = strings.Join(args, " ")
 			params.From = from
 			params.To = to
+			params.Filter = &filter
 
 			log.WithField("graylog", graylog).Debug("Performing absolute search")
 			go search.ByAbsolute(c, errc, graylog, params, auth)
@@ -112,6 +114,7 @@ var keyCmd = &cobra.Command{
 			params := clientkey.NewSearchKeywordParams().WithSort(&defaultSort).WithLimit(&defaultLimit)
 			params.Query = strings.Join(args, " ")
 			params.Keyword = keyword
+			params.Filter = &filter
 
 			log.WithField("graylog", graylog).Debug("Performing keyword search")
 			go search.ByKeyword(c, errc, graylog, params, auth)
@@ -155,6 +158,7 @@ Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".`,
 		for i, graylog := range graylogs {
 			params[i] = clientrel.NewSearchRelativeParams().WithSort(&defaultSort).WithLimit(&defaultLimit)
 			params[i].Query = strings.Join(args, " ")
+			params[i].Filter = &filter
 
 			// Relative to program start minus specified `since` duration (if any).
 			graylog.LastCalled = time.Unix(time.Now().Unix()-int64(since.Seconds()), 0)
@@ -236,6 +240,14 @@ func init() {
 		"keyword",
 		"",
 		"natural language timerange e.g. \"yesterday\" or \"2 weeks ago to wednesday\"",
+	)
+
+	searchCmd.PersistentFlags().StringVarP(
+		&filter,
+		"filter",
+		"x",
+		"",
+		"Filter e.g. \"streams:stream_id\" ",
 	)
 
 	searchCmd.PersistentFlags().BoolVarP(

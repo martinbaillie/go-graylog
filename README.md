@@ -46,7 +46,7 @@ Flags:
 Global Flags:
   -p, --pass string       graylog pass (use "-" for masked prompt) (default "admin")
   -s, --servers strings   graylog server(s) to query (default [localhost:9000])
-  -u, --user string       graylog user (default "admin")
+  -u, --user string       graylog user (default "admin")  
 
 Use "graylog search [command] --help" for more information about a command.
 ```
@@ -72,6 +72,7 @@ Global Flags:
   -t, --timestamps            print message timestamps (local timezone)
   -u, --user string           graylog user (default "admin")
       --utc -t                print UTC message timestamps (has no effect without -t)
+  -x, --filter                Filter e.g. (streams:stream_id)
 ```
 
 ##### Search: Keyword
@@ -91,6 +92,7 @@ Global Flags:
   -t, --timestamps        print message timestamps (local timezone)
   -u, --user string       graylog user (default "admin")
       --utc -t            print UTC message timestamps (has no effect without -t)
+  -x, --filter            Filter e.g. (streams:stream_id)
 ```
 
 ##### Search: Relative
@@ -116,5 +118,6 @@ Global Flags:
   -t, --timestamps        print message timestamps (local timezone)
   -u, --user string       graylog user (default "admin")
       --utc -t            print UTC message timestamps (has no effect without -t)
+  -x, --filter            Filter e.g. (streams:stream_id)      
 ```
 
